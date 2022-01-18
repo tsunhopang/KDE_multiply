@@ -87,13 +87,13 @@ def KDE_multiply(KDE1, KDE2, bw_method=None, downsample=False,
         if isinstance(random_state, int):
             r = np.random.RandomState(random_state)
             index = r.choice(x3.shape[1], size=nsamples)
-            x3 = x3[:,index]
+            x3 = x3[:, index]
         elif random_state:
             index = random_state.choice(x3.shape[1], size=nsamples)
-            x3 = x3[:,index]
+            x3 = x3[:, index]
         else:
             index = np.random.choice(x3.shape[1], size=nsamples)
-            x3 = x3[:,index]
+            x3 = x3[:, index]
 
         w3 = w3[index]
 
