@@ -20,6 +20,14 @@ Example
 -------
 .. code:: python
 
+    from KDE_multiply import KDE_multiply
+    from numpy import dot
+    from numpy.random import seed, uniform, multivariate_normal
+    from numpy.linalg import multi_dot, inv
+    from scipy.stats import gaussian_kde
+    from matplotlib import pyplot as plt
+    from corner import corner
+
     # generate samples to be used for KDE
     dimension = 4 # setting the dimension
     seed(42) # setting the seed
