@@ -59,3 +59,5 @@ Example
     fig = corner(samples_joint_predict.T, color='C0')
     corner(samples_joint.T, fig=fig, color='C1')
     plt.show()
+
+.. image:: https://raw.githubusercontent.com/tsunhopang/KDE_multiply/blob/main/example.svg?sanitize=true
