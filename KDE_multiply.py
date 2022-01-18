@@ -86,11 +86,16 @@ def KDE_multiply(KDE1, KDE2, bw_method=None, downsample=False,
             nsamples = int(np.mean([KDE1.n, KDE2.n]))
         if isinstance(random_state, int):
             r = np.random.RandomState(random_state)
-            x3 = r.choice(x3, size=nsamples)
+            index = r.choice(x3.shape[1], size=nsamples)
+            x3 = x3[:,index]
         elif random_state:
-            x3 = random_state.choice(x3, size=nsamples)
+            index = random_state.choice(x3.shape[1], size=nsamples)
+            x3 = x3[:,index]
         else:
-            x3 = np.random.choice(x3, size=nsamples)
+            index = np.random.choice(x3.shape[1], size=nsamples)
+            x3 = x3[:,index]
+
+        w3 = w3[index]
 
     KDE3 = scipy.stats.gaussian_kde(x3, weights=w3, bw_method=bw_method)
     KDE3.covariance = cov_joint

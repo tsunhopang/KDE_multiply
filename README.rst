@@ -51,7 +51,8 @@ Example
     KDE2 = gaussian_kde(x2)
 
     # multiply the KDEs
-    KDE_joint = KDE_multiply(KDE1, KDE2, random_state=42, nsamples=6000)
+    KDE_joint = KDE_multiply(KDE1, KDE2, downsample=True,
+                             random_state=42, nsamples=6000)
 
     # resample from the joint KDE
     samples_joint = KDE_joint.resample(size=6000)
