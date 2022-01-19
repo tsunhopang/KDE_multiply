@@ -1,3 +1,5 @@
+.. default-role:: math
+
 ============
 KDE_multiply
 ============
@@ -74,9 +76,8 @@ Example
 Methods
 -------
 A Gaussian KDE is a weighted sum of Gaussians centered at the data points $\{\mu_i\}$ and having the same covariance matrix $\Sigma$ estimated based on the samples. Mathematically, it can be written as
-.. math::
-    {\\rm KDE} = \\sum_{i=0}^{N-1} w_i\\mathcal{N}(\\mu_i, \\Sigma),
-where :math:`\{w_i\}` are the weights for each sample.\\
+    `{\\rm KDE} = \\sum_{i=0}^{N-1} w_i\\mathcal{N}(\\mu_i, \\Sigma),`
+where `\{w_i\}` are the weights for each sample.\\
 
 The main concept to be noted is that the product of two Gaussians is also a Gaussian. In particular,
 .. math::
