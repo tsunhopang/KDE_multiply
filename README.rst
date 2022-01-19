@@ -2,7 +2,7 @@
 KDE_multiply
 ============
 
-A simple function to multiply two Gaussian KDEs analytically 
+A function to multiply two scipy Gaussian KDEs analytically with arbitary dimension.
 
 Usage
 -----
