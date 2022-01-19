@@ -1,5 +1,3 @@
-.. default-role:: math
-
 ============
 KDE_multiply
 ============
@@ -75,33 +73,4 @@ Example
 
 Methods
 -------
-A Gaussian KDE is a weighted sum of Gaussians centered at the data points :math:`\{\mu_i\}` and having the same covariance matrix $\Sigma$ estimated based on the samples. Mathematically, it can be written as
-.. math:: {\rm KDE} = \sum_{i=0}^{N-1} w_i\mathcal{N}(\mu_i, \Sigma),
-where ::math:`\\{w_i\\}` are the weights for each sample.\\
-
-The main concept to be noted is that the product of two Gaussians is also a Gaussian. In particular,
-.. math::
-    \\mathcal{N}(\\mu_1, \\Sigma_1) \\times \\mathcal{N}(\\mu_2, \\Sigma_2) \\propto \\mathcal{N}(\\mu_3, \\Sigma_3),
-where
-.. math::
-    \\Sigma_3 = \\Sigma_1 (\\Sigma_1 + \\Sigma_2)^{-1} \\Sigma_2,\\
-.. math::
-    \\mu_3 = \\Sigma_2 (\\Sigma_1 + \\Sigma_2)^{-1} \\mu_1 + \\Sigma_1 (\\Sigma_1 + \\Sigma_2)^{-1} \\mu_2.
-As a result, the product of two Gaussian KDEs can be computed as
-.. math::
-    \begin{aligned}
-            &{\\rm KDE}_1 \\times {\\rm KDE}_2 \\
-            &= \\sum_{i=0}^{N-1} w_i\\mathcal{N}(\\mu_i, \\Sigma_1) \\times \\sum_{j=0}^{M-1} w_j\\mathcal{N}(\\mu_j, \\Sigma_2)\\
-            &=\\sum_{i=0}^{N-1}\\sum_{j=0}^{M-1}w_iw_j\\mathcal{N}(\\mu_i, \\Sigma_1)\\mathcal{N}(\\mu_j, \\Sigma_2)\\
-            &=\\sum_{k=0}^{MN-1} w_k \\mathcal{N}(\\mu_k, \\Sigma_3)\\
-            &\\equiv {\\rm KDE}_3
-    \end{aligned}
-where
-.. math::
-    \begin{aligned}
-    \\Sigma_3 &= \\Sigma_1 (\\Sigma_1 + \\Sigma_2)^{-1} \\Sigma_2,\\
-    \\mu_k &= \\Sigma_2 (\\Sigma_1 + \\Sigma_2)^{-1} \\mu_i + \\Sigma_1 (\\Sigma_1 + \\Sigma_2)^{-1} \\mu_j\\
-    w_k &= w_i \\times w_j
-    \end{aligned}
-\end{equation}
-with :math:`k = N j + i`.
+Details can be found at the methods.pdf
