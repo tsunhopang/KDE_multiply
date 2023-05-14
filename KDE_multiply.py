@@ -18,6 +18,7 @@ def KDE_multiply(KDE1, KDE2, downsample=False,
            = np.linalg.multi_dot((cov_joint, KDE1.inv_cov, x1))
            + np.linalg.multi_dot((cov_joint, KDE2.inv_cov, x2))
     3) The joint weights = np.multiply.outer((w1, w2)).flatten()
+                           * normalization factor correction
 
     The corresponding combined KDE is returned cotaining
     nsamples samples if ``nsamples'' is provided
@@ -56,6 +57,9 @@ def KDE_multiply(KDE1, KDE2, downsample=False,
 
     # calculate the covariance matrix for the combined Gaussians
     cov_joint = np.linalg.inv(KDE1.inv_cov + KDE2.inv_cov)
+    # also calculate the covariance matrix of the two KDEs
+    cov1 = np.linalg.inv(KDE1.inv_cov)
+    cov2 = np.linalg.inv(KDE2.inv_cov)
 
     # fetch the data from the two input KDEs
     x1 = KDE1.dataset
@@ -111,6 +115,15 @@ def KDE_multiply(KDE1, KDE2, downsample=False,
 
     # calculate the weight for the combined samples
     w3 = np.multiply.outer(w1, w2)
+    # also include the correction for the individual normalization
+    # introduced in the Gaussian KDE
+    cov_sum = cov1 + cov2
+    norm_factor = 1. / np.sqrt(2. * np.pi * np.linalg.det(cov_sum))
+    x1_diff_x2 = np.subtract.outer(x1, x2)
+    expoential = np.einsum('abcd,ce,ebad->bd', x1_diff_x2, np.linalg.inv(cov_sum), x1_diff_x2)
+    w3_norm = norm_factor * np.exp(-0.5 * expoential)
+    w3 = w3 * w3_norm
+
     w3 = w3.flatten()
     w3 /= np.sum(w3)
 
