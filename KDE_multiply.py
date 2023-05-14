@@ -122,7 +122,11 @@ def KDE_multiply(KDE1, KDE2, downsample=False,
     # introduced in the Gaussian KDE
     cov_sum = cov1 + cov2
     x1_diff_x2 = np.subtract.outer(x1, x2)
-    expoential = np.einsum('abcd,ce,ebad->bd', x1_diff_x2, np.linalg.inv(cov_sum), x1_diff_x2)
+    x1_diff_x2_diagonal = np.diagonal(x1_diff_x2, axis1=0, axis2=2)
+    expoential = np.einsum('abc,ce,abe->ab',
+                           x1_diff_x2_diagonal,
+                           np.linalg.inv(cov_sum),
+                           x1_diff_x2_diagonal)
     log_w3 += -0.5 * expoential
     log_w3 -= scipy.special.logsumexp(log_w3)
     w3 = np.exp(log_w3)
