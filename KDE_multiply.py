@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.stats
+import scipy.special
 import warnings
 
 
@@ -19,6 +20,8 @@ def KDE_multiply(KDE1, KDE2, downsample=False,
            + np.linalg.multi_dot((cov_joint, KDE2.inv_cov, x2))
     3) The joint weights = np.multiply.outer((w1, w2)).flatten()
                            * normalization factor correction
+
+    See section 8.1.8 in http://compbio.fmph.uniba.sk/vyuka/ml/old/2008/handouts/matrix-cookbook.pdf
 
     The corresponding combined KDE is returned cotaining
     nsamples samples if ``nsamples'' is provided
@@ -114,15 +117,15 @@ def KDE_multiply(KDE1, KDE2, downsample=False,
     x3 = np.array(x3)
 
     # calculate the weight for the combined samples
-    w3 = np.multiply.outer(w1, w2)
+    log_w3 = np.add.outer(np.log(w1), np.log(w2))
     # also include the correction for the individual normalization
     # introduced in the Gaussian KDE
     cov_sum = cov1 + cov2
-    norm_factor = 1. / np.sqrt(2. * np.pi * np.linalg.det(cov_sum))
     x1_diff_x2 = np.subtract.outer(x1, x2)
     expoential = np.einsum('abcd,ce,ebad->bd', x1_diff_x2, np.linalg.inv(cov_sum), x1_diff_x2)
-    w3_norm = norm_factor * np.exp(-0.5 * expoential)
-    w3 = w3 * w3_norm
+    log_w3 += -0.5 * expoential
+    log_w3 -= scipy.special.logsumexp(log_w3)
+    w3 = np.exp(log_w3)
 
     w3 = w3.flatten()
     w3 /= np.sum(w3)
