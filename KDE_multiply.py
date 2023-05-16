@@ -118,20 +118,24 @@ def KDE_multiply(KDE1, KDE2, downsample=False,
 
     # calculate the weight for the combined samples
     log_w3 = np.add.outer(np.log(w1), np.log(w2))
+    log_w3 = log_w3.flatten()
     # also include the correction for the individual normalization
     # introduced in the Gaussian KDE
     cov_sum = cov1 + cov2
-    x1_diff_x2 = np.subtract.outer(x1, x2)
-    x1_diff_x2_diagonal = np.diagonal(x1_diff_x2, axis1=0, axis2=2)
-    expoential = np.einsum('abc,ce,abe->ab',
-                           x1_diff_x2_diagonal,
+    x1_diff_x2 = []
+    for i in range(KDE1.d):
+        x1_diff_x2_tmp = np.subtract.outer(x1[i], x2[i])
+        x1_diff_x2_tmp = x1_diff_x2_tmp.flatten()
+        x1_diff_x2.append(x1_diff_x2_tmp)
+    x1_diff_x2 = np.array(x1_diff_x2)
+    expoential = np.einsum('ai,ab,bi->i',
+                           x1_diff_x2,
                            np.linalg.inv(cov_sum),
-                           x1_diff_x2_diagonal)
+                           x1_diff_x2)
     log_w3 += -0.5 * expoential
-    log_w3 -= scipy.special.logsumexp(log_w3)
-    w3 = np.exp(log_w3)
+    log_w3 -= np.amin(log_w3)
 
-    w3 = w3.flatten()
+    w3 = np.exp(log_w3)
     w3 /= np.sum(w3)
 
     # downsample the resulting KDE otherwise it will take ages
