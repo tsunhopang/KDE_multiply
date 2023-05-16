@@ -141,7 +141,7 @@ def KDE_multiply(KDE1, KDE2, downsample=False,
     # downsample the resulting KDE otherwise it will take ages
     # to do a KDE.logpdf(x)
     if downsample and not downsample_early:
-        index = index_random_choice(random_state, x3.shape[1], nsamples)
+        index = index_random_choice(random_state, x3.shape[1], nsamples, w3)
         x3 = x3[:, index]
         w3 = w3[index]
 
@@ -152,14 +152,14 @@ def KDE_multiply(KDE1, KDE2, downsample=False,
     return KDE3
 
 
-def index_random_choice(random_state, length, N):
+def index_random_choice(random_state, length, N, p):
 
     if isinstance(random_state, int):
         r = np.random.RandomState(random_state)
-        index = r.choice(length, size=N)
+        index = r.choice(length, size=N, p=p)
     elif random_state:
-        index = random_state.choice(length, size=N)
+        index = random_state.choice(length, size=N, p=p)
     else:
-        index = np.random.choice(length, size=N)
+        index = np.random.choice(length, size=N, p=p)
 
     return index
