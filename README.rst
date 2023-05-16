@@ -30,7 +30,7 @@ Example
 
     # generate samples to be used for KDE
     dimension = 4 # setting the dimension
-    seed(42) # setting the seed
+    seed(512) # setting the seed
 
     # randomly generate the mean for the two Gaussians
     mean1 = uniform(-3, 3, size=dimension)
